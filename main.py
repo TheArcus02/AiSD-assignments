@@ -3,16 +3,20 @@ import time
 import matplotlib.pyplot as plt
 from typing import Callable
 from insertion import insertion_sort
+from selection import selection_sort
+from heap import heap_sort
 
 def main():
-    MAX_LEN = 1000
+    MAX_LEN = 10000
     STEP = MAX_LEN // 10
 
     plt.style.use("dark_background")
     plt.xlabel("List Length")
     plt.ylabel("Execution Time (s)")
     
-    setTimesComplexity(MAX_LEN, STEP, insertion_sort)
+    # pass sorting function as a second argument
+    # you want to generate plot for.
+    setTimesComplexity(MAX_LEN, STEP, heap_sort)
 
     plt.legend()
     plt.show()
@@ -28,13 +32,14 @@ def setTimesComplexity(max_len: int, step: int, sortFunc: Callable):
     for data_type in data_types:      
         for data_lenght in range(0, max_len, step):
             data = getData(data_lenght, data_type)
-            
+
             start = time.perf_counter()
             sortFunc(data)
             stop = time.perf_counter()
 
             times.append(stop - start)
             lengths.append(data_lenght)
+            # print(f'sorted {data_lenght} {data_type} data: {data}')
         updatePlot(lengths, times, f'{data_type} data')
         lengths = []
         times = []
@@ -44,7 +49,7 @@ def getData(length: int, d_type: str) -> list[int]:
     if d_type == 'const':
         return [1 for _ in range(length)]
     
-    data = [random.randint(0, 99) for _ in range(length)]
+    data = [random.randint(0, length) for _ in range(length)]
     
     if d_type == 'random':
         return data 
