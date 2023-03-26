@@ -1,23 +1,26 @@
 import random
 import time
+import numpy as np
 import matplotlib.pyplot as plt
 from typing import Callable
 from insertion import insertion_sort
 from selection import selection_sort
 from heap import heap_sort
+from merge import merge_sort
 
 def main():
-    MAX_LEN = 10000
-    STEP = MAX_LEN // 10
-
-    plt.style.use("dark_background")
-    plt.xlabel("List Length")
-    plt.ylabel("Execution Time (s)")
+    # constants
+    MAX_LEN = 25000
+    STEP = MAX_LEN // 15
     
     # pass sorting function as a second argument
     # you want to generate plot for.
-    setTimesComplexity(MAX_LEN, STEP, heap_sort)
-
+    setTimesComplexity(MAX_LEN, STEP, merge_sort)
+    
+    # plot configuration
+    plt.style.use("dark_background")
+    plt.xlabel("List Length")
+    plt.ylabel("Execution Time (s)")
     plt.legend()
     plt.show()
 
@@ -39,7 +42,6 @@ def setTimesComplexity(max_len: int, step: int, sortFunc: Callable):
 
             times.append(stop - start)
             lengths.append(data_lenght)
-            # print(f'sorted {data_lenght} {data_type} data: {data}')
         updatePlot(lengths, times, f'{data_type} data')
         lengths = []
         times = []
