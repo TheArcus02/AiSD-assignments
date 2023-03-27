@@ -8,5 +8,5 @@ def selection_sort(arr: list[int]) -> list[int]:
             if arr[j] < arr[min_index]:
                 min_index = j
         (arr[i], arr[min_index]) = (arr[min_index], arr[i])
-    
+
     return arr

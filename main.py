@@ -8,15 +8,17 @@ from selection import selection_sort
 from heap import heap_sort
 from merge import merge_sort
 
+
 def main():
     # constants
-    MAX_LEN = 25000
+    MAX_LEN = 50000
     STEP = MAX_LEN // 15
-    
+    ALGORITHM = merge_sort
+
     # pass sorting function as a second argument
     # you want to generate plot for.
-    setTimesComplexity(MAX_LEN, STEP, merge_sort)
-    
+    setTimesComplexity(MAX_LEN, STEP, ALGORITHM)
+
     # plot configuration
     plt.style.use("dark_background")
     plt.xlabel("List Length")
@@ -24,15 +26,13 @@ def main():
     plt.legend()
     plt.show()
 
-def updatePlot(lengths, times, label):
-    plt.plot(lengths, times, label=label)
 
 def setTimesComplexity(max_len: int, step: int, sortFunc: Callable):
-    
+
     data_types = ['ascending', 'descending', 'random', 'const', 'v']
     lengths = []
     times = []
-    for data_type in data_types:      
+    for data_type in data_types:
         for data_lenght in range(0, max_len, step):
             data = getData(data_lenght, data_type)
 
@@ -42,19 +42,22 @@ def setTimesComplexity(max_len: int, step: int, sortFunc: Callable):
 
             times.append(stop - start)
             lengths.append(data_lenght)
-        updatePlot(lengths, times, f'{data_type} data')
+
+        # Updating plot
+        plt.plot(lengths, times, label=f'{data_type} data')
         lengths = []
         times = []
 
-def getData(length: int, d_type: str) -> list[int]:
+
+def getData(length: int, d_type: str) -> list[int] | None:
 
     if d_type == 'const':
         return [1 for _ in range(length)]
-    
+
     data = [random.randint(0, length) for _ in range(length)]
-    
+
     if d_type == 'random':
-        return data 
+        return data
     elif d_type == 'ascending':
         return sorted(data)
     elif d_type == 'descending':
