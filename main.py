@@ -11,13 +11,21 @@ from merge import merge_sort
 
 def main():
     # constants
-    MAX_LEN = 50000
+    MAX_LEN = 10000
     STEP = MAX_LEN // 15
     ALGORITHM = merge_sort
 
+    # Use one of the following functions to either compare times complexity
+    # for particular sorting algorithm or compare different algorithms
+
     # pass sorting function as a second argument
     # you want to generate plot for.
-    setTimesComplexity(MAX_LEN, STEP, ALGORITHM)
+    # setTimesComplexity(MAX_LEN, STEP, ALGORITHM)
+
+    # Pass one of following data types
+    # ascending, descending, random, const, v
+    compareAlgorithms(MAX_LEN, STEP, 'v', [
+                      insertion_sort, selection_sort, heap_sort, merge_sort])
 
     # plot configuration
     plt.style.use("dark_background")
@@ -49,7 +57,28 @@ def setTimesComplexity(max_len: int, step: int, sortFunc: Callable):
         times = []
 
 
-def getData(length: int, d_type: str) -> list[int] | None:
+def compareAlgorithms(max_len: int, step: int, dataType: str, algorithms: list[Callable]):
+    lengths = []
+    times = []
+
+    for alogrithm in algorithms:
+        for data_lenght in range(0, max_len, step):
+            data = getData(data_lenght, dataType)
+
+            start = time.perf_counter()
+            alogrithm(data)
+            stop = time.perf_counter()
+
+            times.append(stop - start)
+            lengths.append(data_lenght)
+
+        # Updating plot
+        plt.plot(lengths, times, label=f'{alogrithm.__name__}')
+        lengths = []
+        times = []
+
+
+def getData(length: int, d_type: str) -> list[int]:
 
     if d_type == 'const':
         return [1 for _ in range(length)]
@@ -64,6 +93,7 @@ def getData(length: int, d_type: str) -> list[int] | None:
         return sorted(data, reverse=True)
     elif d_type == 'v':
         return sorted(data[:length//2]) + sorted(data[length//2:], reverse=True)
+    return data
 
 
 if __name__ == '__main__':
