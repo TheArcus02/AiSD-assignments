@@ -32,6 +32,14 @@ def main():
     ...
 ```
 
+Uncoment one of the following functions. To either generate plot for one algorithm but all data types or to generate plot for one data type but all algorithms.
+```python
+setTimesComplexity(MAX_LEN, STEP, ALGORITHM)
+```
+```python
+compareAlgorithms(MAX_LEN, STEP, 'v', [
+                      insertion_sort, selection_sort, heap_sort, merge_sort])
+```
 To run the script:
 ```sh
 py main.py

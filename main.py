@@ -13,19 +13,25 @@ def main():
     # constants
     MAX_LEN = 10000
     STEP = MAX_LEN // 15
+
+    # Set one of following sorting algorithms
+    # insertion_sort, selection_sort, heap_sort, merge_sort
+    # Used only for setTimesComplexity function
     ALGORITHM = merge_sort
+
+    # Set one of following data types
+    # ascending, descending, random, const, v
+    # Used only for compareAlgorithms function
+    DATA_TYPE = 'ascending'
 
     # Use one of the following functions to either compare times complexity
     # for particular sorting algorithm or compare different algorithms
+    # Comment out the one you don't want to use
 
-    # pass sorting function as a second argument
-    # you want to generate plot for.
-    # setTimesComplexity(MAX_LEN, STEP, ALGORITHM)
+    setTimesComplexity(MAX_LEN, STEP, ALGORITHM)
 
-    # Pass one of following data types
-    # ascending, descending, random, const, v
-    compareAlgorithms(MAX_LEN, STEP, 'v', [
-                      insertion_sort, selection_sort, heap_sort, merge_sort])
+    # compareAlgorithms(MAX_LEN, STEP, DATA_TYPE, [
+    #                   insertion_sort, selection_sort, heap_sort, merge_sort])
 
     # plot configuration
     plt.style.use("dark_background")
@@ -92,7 +98,7 @@ def getData(length: int, d_type: str) -> list[int]:
     elif d_type == 'descending':
         return sorted(data, reverse=True)
     elif d_type == 'v':
-        return sorted(data[:length//2]) + sorted(data[length//2:], reverse=True)
+        return sorted(data[: length//2]) + sorted(data[length//2:], reverse=True)
     return data
 
 
