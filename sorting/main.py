@@ -11,7 +11,7 @@ from merge import merge_sort
 
 def main():
     # constants
-    MAX_LEN = 10000
+    MAX_LEN = 5000
     STEP = MAX_LEN // 15
 
     # Set one of following sorting algorithms
@@ -22,16 +22,16 @@ def main():
     # Set one of following data types
     # ascending, descending, random, const, v
     # Used only for compareAlgorithms function
-    DATA_TYPE = 'ascending'
+    DATA_TYPE = 'v'
 
     # Use one of the following functions to either compare times complexity
     # for particular sorting algorithm or compare different algorithms
     # Comment out the one you don't want to use
 
-    setTimesComplexity(MAX_LEN, STEP, ALGORITHM)
+    # setTimesComplexity(MAX_LEN, STEP, ALGORITHM)
 
-    # compareAlgorithms(MAX_LEN, STEP, DATA_TYPE, [
-    #                   insertion_sort, selection_sort, heap_sort, merge_sort])
+    compareAlgorithms(MAX_LEN, STEP, DATA_TYPE, [
+                      insertion_sort, selection_sort, heap_sort, merge_sort])
 
     # plot configuration
     plt.style.use("dark_background")
@@ -98,7 +98,8 @@ def getData(length: int, d_type: str) -> list[int]:
     elif d_type == 'descending':
         return sorted(data, reverse=True)
     elif d_type == 'v':
-        return sorted(data[: length//2]) + sorted(data[length//2:], reverse=True)
+        return [x for x in range(length, 0, -1) if x % 2 == 0]  \
+            + [x for x in range(length) if x % 2 != 0]
     return data
 
 
