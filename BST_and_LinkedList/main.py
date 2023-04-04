@@ -2,7 +2,7 @@ import random
 import time
 import matplotlib.pyplot as plt
 from linkedList import LinkedList, Node
-from BinarySearchTree import Node as BSTNode, insert, findNode, deleteTree
+from BinarySearchTree import Node as BSTNode, getHeight, insert, findNode, deleteTree, createAVLFromBST
 
 
 def main():
@@ -15,9 +15,30 @@ def main():
     # compare_searching(LENGTH, STEP)
 
     # compare deleting time
-    compare_deleting(LENGTH, STEP)
+    # compare_deleting(LENGTH, STEP)
 
-    generate_plot()
+    # compare heights of bst to avl
+    compare_heights(LENGTH, STEP)
+
+    generate_plot(ylabel='Height')
+
+
+def compare_heights(max_len: int, step: int):
+    lengths = []
+    avl_heights = []
+    bst_heights = []
+
+    for data_lenght in range(0, max_len, step):
+        data = get_random_data(data_lenght)
+        bst = create_bst(data)
+        bst_heights.append(getHeight(bst))
+
+        avl = createAVLFromBST(bst)
+        avl_heights.append(getHeight(avl))
+
+        lengths.append(data_lenght)
+    plt.plot(lengths, bst_heights, label='BST')
+    plt.plot(lengths, avl_heights, label='AVL')
 
 
 def compare_creating(max_len: int, step: int):
@@ -126,10 +147,10 @@ def get_random_data(len: int) -> list[int]:
     return random.sample(range(len), len)
 
 
-def generate_plot(log=False):
+def generate_plot(log=False, ylabel="Execution Time (s)"):
     plt.style.use("dark_background")
     plt.xlabel("List Length")
-    plt.ylabel("Execution Time (s)")
+    plt.ylabel(ylabel)
     if log:
         plt.yscale('log')
     plt.legend()

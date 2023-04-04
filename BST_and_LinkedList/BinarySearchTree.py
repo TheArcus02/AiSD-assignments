@@ -72,3 +72,71 @@ def deleteTree(root):
     deleteTree(root.right)
     root = None
     return root
+
+
+def printTree(root, space: int):
+    if root is None:
+        return
+    space += 10
+    printTree(root.right, space)
+    print()
+    for i in range(10, space):
+        print(end=' ')
+    print(root.key)
+    printTree(root.left, space)
+
+
+def getHeight(root) -> int:
+    if root is None:
+        return 0
+    return max(getHeight(root.left), getHeight(root.right)) + 1
+
+
+# ======================== AVL Tree ========================
+def createAVLFromBST(root) -> Node:
+
+    # Base case
+    if root is None:
+        return root
+
+    # Recursively create left and right subtrees
+
+    root.left = createAVLFromBST(root.left)
+    root.right = createAVLFromBST(root.right)
+
+    # Get the balance factor of this ancestor node to check
+    # whether this node became unbalanced
+    height_difference = getHeight(root.left) - getHeight(root.right)
+
+    # If this node becomes unbalanced, then there are 4 cases``
+    if height_difference > 1:
+        # Left Left Case
+        if getHeight(root.left.left) >= getHeight(root.left.right):
+            root = rightRotate(root)
+        # Left Right Case
+        else:
+            root.left = leftRotate(root.left)
+            root = rightRotate(root)
+    elif height_difference < -1:
+        # Right Right Case
+        if getHeight(root.right.right) >= getHeight(root.right.left):
+            root = leftRotate(root)
+        # Right Left Case
+        else:
+            root.right = rightRotate(root.right)
+            root = leftRotate(root)
+    return root
+
+
+def rightRotate(root):
+    new_root = root.left
+    root.left = new_root.right
+    new_root.right = root
+    return new_root
+
+
+def leftRotate(root):
+    new_root = root.right
+    root.right = new_root.left
+    new_root.left = root
+    return new_root
