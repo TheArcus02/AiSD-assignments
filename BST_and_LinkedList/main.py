@@ -6,8 +6,9 @@ from BinarySearchTree import Node as BSTNode, getHeight, insert, findNode, delet
 
 
 def main():
-    LENGTH = 10000
+    LENGTH = 20000
     STEP = LENGTH // 15
+
     # compare creating time
     # compare_creating(LENGTH, STEP)
 
@@ -20,7 +21,8 @@ def main():
     # compare heights of bst to avl
     compare_heights(LENGTH, STEP)
 
-    generate_plot(ylabel='Height')
+    # ylabel='Height'
+    generate_plot(log=False)
 
 
 def compare_heights(max_len: int, step: int):

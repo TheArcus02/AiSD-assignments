@@ -5,7 +5,7 @@ class Node:
         self.next = next
 
     def __repr__(self) -> str:
-        return self.data
+        return str(self.data)
 
 
 class LinkedList:

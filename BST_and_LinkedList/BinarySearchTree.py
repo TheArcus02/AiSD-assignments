@@ -5,6 +5,9 @@ class Node:
         self.left = None
         self.right = None
 
+    def __repr__(self) -> str:
+        return f'Node({self.key})'
+
 
 def inorder(root: Node | None):
     if root is not None:
