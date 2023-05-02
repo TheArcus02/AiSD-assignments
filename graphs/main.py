@@ -1,19 +1,23 @@
-from makeGraphs import generate_eulerian_graph
+from makeGraphs import generate_eulerian_graph, Graph
 
 
 def main():
 
-    N = 10
-    g1 = generate_eulerian_graph(N, 0.3)
-    # g2 = generate_eulerian_graph(N, 0.7)
-    print(g1)
-    # print(g2)
-    path1 = g1.findEulerianPath()
-    # path2 = g2.findEulerianPath()
-    print(path1)
+    N = 12
 
-    # print(path2)
+    g1 = generate_eulerian_graph(N, 0.3)
+    print(g1)
+    cycleExists = g1.findHamiltonCycle(all_cycles=True)
 
 
 if __name__ == '__main__':
     main()
+
+
+'''
+[[0, 1, 0, 1, 0],
+ [1, 0, 1, 1, 1],
+ [0, 1, 0, 0, 1,],
+ [1, 1, 0, 0, 1],
+ [0, 1, 1, 1, 0], ]
+'''

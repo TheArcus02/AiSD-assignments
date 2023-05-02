@@ -1,4 +1,3 @@
-
 from collections import defaultdict
 import random
 
@@ -73,12 +72,20 @@ class Graph:
         for i in range(self.V):
             if len(self.graph[i]) % 2 != 0 or len(self.graph[i]) == 0:
                 return False
-        return True
+
+        # Create a copy of the graph
+        graph_copy = defaultdict(list)
+        for i in self.graph:
+            graph_copy[i] = self.graph[i].copy()
+
+        # If both conditions are satisfied, return True
+        return True, graph_copy
 
     def findEulerianPath(self):
-        if not self.isEulerian():
+        is_eulerian, graph_copy = self.isEulerian()  # type: ignore
+        if not is_eulerian:
             return None
-        graph = self.graph.copy()
+
         # Create empty stack and list
         stack = []
         path = []
@@ -89,15 +96,80 @@ class Graph:
             # Get current vertex
             v = stack[-1]
             # If current vertex has no neighbors, add to path and remove from stack
-            if len(graph[v]) == 0:
+            if len(graph_copy[v]) == 0:
                 path.append(stack.pop())
             # If current vertex has neighbors, add neighbor to stack and remove edge
             else:
-                stack.append(graph[v][-1])
-                graph[v].pop()
-                graph[stack[-1]].remove(v)
+                stack.append(graph_copy[v][-1])
+                graph_copy[v].pop()
+                graph_copy[stack[-1]].remove(v)
         # Return path
         return path
+
+    def findHamiltonCycle(self, all_cycles=False):
+
+        path = []
+        path.append(0)
+
+        visited = [False] * self.V
+        visited[0] = True
+
+        if not self.hamCycleUtil(path, 1, visited, all_cycles):
+            return False
+        return True
+
+    def hamCycleUtil(self, path: list[int], pos: int, visited: list[bool], all_cycles: bool):
+
+        # base case: if all vertices are
+        # included in the path
+        if pos == self.V:
+            # Last vertex must be adjacent to the
+            # first vertex in path to make a cycle
+            if path[0] in self.graph[path[pos-1]]:
+                # Include source vertex
+                # into the path and
+                # * Print all cycles *
+
+                path.append(0)
+
+                for i in range(self.V):
+                    print(path[i], end=" ")
+                print()
+
+                path.pop()
+
+                return True
+            return False
+
+        # Try different vertices as a next candidate
+        # in Hamiltonian Cycle. We don't try for 0 as
+        # we included 0 as starting point in hamCycle()
+        for v in self.graph[path[pos-1]]:
+
+            if self.isSafe(v, pos, path) and not visited[v]:
+                path.append(v)
+                visited[v] = True
+
+                if self.hamCycleUtil(path, pos+1, visited, all_cycles) and not all_cycles:
+                    return True
+
+                # Remove current vertex if it doesn't
+                # lead to a solution
+                visited[v] = False
+                path.pop()
+        return False
+
+    def isSafe(self, v, pos, path) -> bool:
+        # Check if current vertex and last vertex
+        # in path are adjacent
+        if v not in self.graph[path[pos-1]]:
+            return False
+
+        # Check if current vertex not already in path
+        if v in path:
+            return False
+
+        return True
 
     def __str__(self):
         return str(self.graph)
@@ -124,6 +196,9 @@ def generate_graph(n: int, density: float):
 
 def generate_eulerian_graph(n: int, density: float):
     g = generate_graph(n, density)
-    while g.isEulerian() == False:
+
+    # if you want to generate a graph with a Hamilton cycle
+    # add: and g.findHamiltonCycle() in perentheses
+    while not g.isEulerian():
         g = generate_graph(n, density)
     return g
