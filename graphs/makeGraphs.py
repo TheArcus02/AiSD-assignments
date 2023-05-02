@@ -130,13 +130,13 @@ class Graph:
                 # into the path and
                 # * Print all cycles *
 
-                path.append(0)
+                #  path.append(0)
 
-                for i in range(self.V):
-                    print(path[i], end=" ")
-                print()
+                # for i in range(self.V):
+                #     print(path[i], end=" ")
+                # print()
 
-                path.pop()
+                # path.pop()
 
                 return True
             return False
