@@ -4,11 +4,12 @@ from makeGraphs import generate_eulerian_graph, Graph
 
 
 def main():
-    MAX_VERTICES = 17
+    MAX_VERTICES = 16
     STEP = 1
-    DENSITY = 0.7
+    DENSITY = 0.5
 
-    setTimeComplexity(MAX_VERTICES, STEP, DENSITY)
+    # setTimeComplexity(MAX_VERTICES, STEP, DENSITY)
+    ex2SetTimeComplexity(MAX_VERTICES, STEP, DENSITY)
 
     generatePlot()
 
@@ -35,8 +36,22 @@ def setTimeComplexity(max_len: int, step: int, density: float):
         times = []
 
 
-def hamiltonCycle(graph: Graph):
-    return graph.findHamiltonCycle(all_cycles=False)
+def ex2SetTimeComplexity(max_len: int, step: int, density: float):
+    lengths = range(3, max_len, step)
+    times = []
+
+    for data_len in range(3, max_len, step):
+        graph = generate_eulerian_graph(data_len, density)
+        start = time.perf_counter()
+        hamiltonCycle(graph, all_cycles=True)
+        stop = time.perf_counter()
+        times.append(stop - start)
+
+    plt.plot(lengths, times, label='All Hamilton Cycles')
+
+
+def hamiltonCycle(graph: Graph, all_cycles=False):
+    return graph.findHamiltonCycle(all_cycles)
 
 
 def eulerPath(graph: Graph):
