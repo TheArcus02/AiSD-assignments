@@ -1,4 +1,4 @@
-def knapSackDynamic(max_weight, weights, values, num_items):
+def knapSackDynamic(max_weight: int, weights: list[int], values: list[int], num_items: int):
 
     dp = [0 for _ in range(max_weight + 1)]
 
@@ -12,7 +12,7 @@ def knapSackDynamic(max_weight, weights, values, num_items):
     return dp[max_weight]
 
 
-def knapSackGreedy(max_weight, weights, values):
+def knapSackGreedy(max_weight: int, weights: list[int], values: list[int], num_items: int):
     items = list(zip(weights, values))
     items.sort(key=lambda x: x[1]/x[0], reverse=True)
 
