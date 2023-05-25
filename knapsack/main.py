@@ -5,16 +5,16 @@ import matplotlib.pyplot as plt
 
 
 def main():
-    MAX_WEIGHT = 100
-    MAX_ITEMS = 2000
-    STEP = 100
+    MAX_WEIGHT = 20_000
+    MAX_ITEMS = 1000
+    STEP = 1000
 
     '''
         Uncomment the function you want to run
         and generate graph from it
     '''
-    constMaxWeight(MAX_WEIGHT, MAX_ITEMS, STEP)
-    # constItems(MAX_WEIGHT, MAX_ITEMS, STEP)
+    # constMaxWeight(MAX_WEIGHT, MAX_ITEMS, STEP)
+    constItems(MAX_WEIGHT, MAX_ITEMS, STEP)
 
 
 def constMaxWeight(max_weight: int, max_items: int, step: int):
@@ -22,7 +22,7 @@ def constMaxWeight(max_weight: int, max_items: int, step: int):
     times = []
     solves = [[], []]
     solve_quality = []
-    lengths = range(100, max_items, step)
+    lengths = range(1000, max_items, step)
     algorithms = [knapSackDynamic, knapSackGreedy]
 
     figure, axis = plt.subplots(1, 2)
@@ -48,10 +48,11 @@ def constMaxWeight(max_weight: int, max_items: int, step: int):
         times = []
 
     for idx in range(len(solves[0])):
-        print(((solves[0][idx] - solves[1][idx]) / solves[0][idx]) * 100)
+        # print(((solves[0][idx] - solves[1][idx]) / solves[0][idx]) * 100)
         solve_quality.append(
             ((solves[0][idx] - solves[1][idx]) / solves[0][idx]) * 100)
-    axis[1].plot(lengths, solve_quality, label='Solve Quality')
+    axis[1].bar(lengths, solve_quality,
+                label='Solve Quality', width=200)
 
     # logaritmic scale for execution time
     axis[0].set_yscale('log')
@@ -66,7 +67,7 @@ def constItems(max_weight: int, max_items: int, step: int):
     times = []
     solves = [[], []]
     solve_quality = []
-    max_weights = range(1, max_weight, step)
+    max_weights = range(1000, max_weight, step)
     algorithms = [knapSackDynamic, knapSackGreedy]
 
     figure, axis = plt.subplots(1, 2)
@@ -77,7 +78,7 @@ def constItems(max_weight: int, max_items: int, step: int):
 
     all_weights = [[random.randint(1, current_weight)
                     for _ in range(max_items)] for current_weight in max_weights]
-    all_values = [[random.randint(1, 1000) for _ in range(max_items)]
+    all_values = [[random.randint(100, 10000) for _ in range(max_items)]
                   for _ in range(len(max_weights))]
 
     for idx, algorithm in enumerate(algorithms):
@@ -93,8 +94,10 @@ def constItems(max_weight: int, max_items: int, step: int):
         times = []
 
     for idx in range(len(solves[0])):
-        solve_quality.append(solves[0][idx] - solves[1][idx] / solves[0][idx])
-    axis[1].plot(max_weights, solve_quality, label='Solve Quality')
+        # print(((solves[0][idx] - solves[1][idx]) / solves[0][idx]) * 100)
+        solve_quality.append(
+            ((solves[0][idx] - solves[1][idx]) / solves[0][idx]) * 100)
+    axis[1].bar(max_weights, solve_quality, label='Solve Quality', width=200)
 
     # logaritmic scale for execution time
     axis[0].set_yscale('log')
