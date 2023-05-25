@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 
 def main():
     MAX_WEIGHT = 100
-    MAX_ITEMS = 30_000
-    STEP = 1000
+    MAX_ITEMS = 2000
+    STEP = 100
 
     '''
         Uncomment the function you want to run
@@ -22,7 +22,7 @@ def constMaxWeight(max_weight: int, max_items: int, step: int):
     times = []
     solves = [[], []]
     solve_quality = []
-    lengths = range(1, max_items, step)
+    lengths = range(100, max_items, step)
     algorithms = [knapSackDynamic, knapSackGreedy]
 
     figure, axis = plt.subplots(1, 2)
@@ -31,12 +31,13 @@ def constMaxWeight(max_weight: int, max_items: int, step: int):
     axis[1].set_title(f'Solve Quality')
     axis[1].set_xlabel(f'List Length')
 
-    for idx, algorithm in enumerate(algorithms):
-        for data_length in lengths:
-            weights = [random.randint(1, max_weight)
-                       for _ in range(data_length)]
-            values = [random.randint(1, 1000) for _ in range(data_length)]
+    all_weights = [[random.randint(1, max_weight)
+                    for _ in range(length)] for length in lengths]
+    all_values = [[random.randint(100, 10000)
+                   for _ in range(length)] for length in lengths]
 
+    for idx, algorithm in enumerate(algorithms):
+        for weights, values, data_length in zip(all_weights, all_values, lengths):
             start = time.perf_counter()
             result = algorithm(max_weight, weights, values, data_length)
             stop = time.perf_counter()
@@ -47,7 +48,9 @@ def constMaxWeight(max_weight: int, max_items: int, step: int):
         times = []
 
     for idx in range(len(solves[0])):
-        solve_quality.append(solves[0][idx] - solves[1][idx] / solves[0][idx])
+        print(((solves[0][idx] - solves[1][idx]) / solves[0][idx]) * 100)
+        solve_quality.append(
+            ((solves[0][idx] - solves[1][idx]) / solves[0][idx]) * 100)
     axis[1].plot(lengths, solve_quality, label='Solve Quality')
 
     # logaritmic scale for execution time
@@ -72,15 +75,16 @@ def constItems(max_weight: int, max_items: int, step: int):
     axis[1].set_title(f'Solve Quality')
     axis[1].set_xlabel(f'Max Weight')
 
-    for idx, algorithm in enumerate(algorithms):
-        for current_weight in max_weights:
+    all_weights = [[random.randint(1, current_weight)
+                    for _ in range(max_items)] for current_weight in max_weights]
+    all_values = [[random.randint(1, 1000) for _ in range(max_items)]
+                  for _ in range(len(max_weights))]
 
-            weights = [random.randint(1, current_weight)
-                       for _ in range(max_items)]
-            values = [random.randint(1, 1000) for _ in range(max_items)]
+    for idx, algorithm in enumerate(algorithms):
+        for curr_max_weight, weights, values in zip(max_weights, all_weights, all_values):
 
             start = time.perf_counter()
-            result = algorithm(current_weight, weights, values, max_items)
+            result = algorithm(curr_max_weight, weights, values, max_items)
             stop = time.perf_counter()
 
             solves[idx].append(result)
