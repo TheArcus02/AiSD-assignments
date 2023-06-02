@@ -1,5 +1,7 @@
 from collections import defaultdict
 import random
+import networkx as nx
+import matplotlib.pyplot as plt
 
 
 class Graph:
@@ -130,13 +132,13 @@ class Graph:
                 # into the path and
                 # * Print all cycles *
 
-                #  path.append(0)
+                path.append(0)
 
-                # for i in range(self.V):
-                #     print(path[i], end=" ")
-                # print()
+                for i in range(self.V):
+                    print(path[i], end=" ")
+                print()
 
-                # path.pop()
+                path.pop()
 
                 return True
             return False
@@ -202,3 +204,41 @@ def generate_eulerian_graph(n: int, density: float):
     while not g.isEulerian():
         g = generate_graph(n, density)
     return g
+
+
+def matrixToGraph(adjMatrix):
+    V = len(adjMatrix)
+    graph = Graph(V)
+    for i in range(V):
+        for j in range(i+1, V):
+            if adjMatrix[i][j] == 1:
+                graph.addEdge(i, j)
+    return graph
+
+
+def visualizeGraph(graph):
+    G = nx.Graph()
+    for u in range(graph.V):
+        for v in graph.graph[u]:
+            G.add_edge(u, v)
+
+    # Układ wiosenny (spring layout) dla wizualizacji grafu
+    pos = nx.spring_layout(G)
+    nx.draw(G, pos, with_labels=True, node_size=500, node_color='lightblue',
+            font_weight='bold', font_color='black', edge_color='gray')
+    plt.show()
+
+
+matrix = [
+    [0, 0, 1, 1, 1, 1],
+    [0, 0, 1, 1, 0, 0],
+    [1, 1, 0, 0, 1, 1],
+    [1, 1, 0, 0, 1, 1],
+    [1, 0, 1, 1, 0, 1],
+    [1, 0, 1, 1, 1, 0]
+]
+g = matrixToGraph(matrix)
+visualizeGraph(g)
+print(g)
+print(g.findEulerianPath())
+g.findHamiltonCycle()

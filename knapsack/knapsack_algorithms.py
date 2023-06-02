@@ -2,6 +2,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+# def knapSack(max_weight, weights, values, num_items):  # not optimized
+#     K = [[0 for x in range(max_weight + 1)] for x in range(num_items + 1)]
+
+#     # Build table K[][] in bottom up manner
+#     for i in range(num_items + 1):
+#         for weight in range(max_weight + 1):
+#             if i == 0 or weight == 0:
+#                 K[i][weight] = 0
+#             elif weights[i-1] <= weight:
+#                 K[i][weight] = max(values[i-1]
+#                                    + K[i-1][weight-weights[i-1]],
+#                                    K[i-1][weight])
+#             else:
+#                 K[i][weight] = K[i-1][weight]
+
+#     return K[num_items][max_weight]
+
+
+# optimized for space
 def knapSackDynamic(max_weight: int, weights: list[int], values: list[int], num_items: int):
 
     dp = [0 for _ in range(max_weight + 1)]
@@ -33,19 +52,3 @@ def knapSackGreedy(max_weight: int, weights: list[int], values: list[int], num_i
             remaining_weight -= weight
 
     return total_value
-
-
-# # make data:
-# np.random.seed(3)
-# x = 0.5 + np.arange(8)
-# y = np.random.uniform(2, 7, len(x))
-
-# # plot
-# fig, ax = plt.subplots()
-
-# ax.bar(x, y, width=1, edgecolor="white", linewidth=0.7)
-
-# # ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
-# #        ylim=(0, 8), yticks=np.arange(1, 8))
-
-# plt.show()
