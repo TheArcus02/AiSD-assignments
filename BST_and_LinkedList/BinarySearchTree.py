@@ -16,6 +16,20 @@ def inorder(root: Node | None):
         inorder(root.right)
 
 
+def preorder(root: Node | None):
+    if root is not None:
+        print(str(root.key) + '->', end=' ')
+        preorder(root.left)
+        preorder(root.right)
+
+
+def postorder(root: Node | None):
+    if root is not None:
+        postorder(root.left)
+        postorder(root.right)
+        print(str(root.key) + '->', end=' ')
+
+
 def insert(node, key: int) -> Node:
     if node is None:
         return Node(key)
@@ -113,21 +127,36 @@ def createAVLFromBST(root) -> Node:
 
     # If this node becomes unbalanced, then there are 4 cases``
     if height_difference > 1:
+        print('=============================BeforeRotation==========================================')
+        printTree(root, 0)
         # Left Left Case
         if getHeight(root.left.left) >= getHeight(root.left.right):
             root = rightRotate(root)
         # Left Right Case
         else:
             root.left = leftRotate(root.left)
+            print(
+                '=============================MiddleRotation==========================================')
+            printTree(root, 0)
             root = rightRotate(root)
+        print('=============================AfterRotation=========================================')
+        printTree(root, 0)
     elif height_difference < -1:
+        print('=============================BeforeRotation==========================================')
+        printTree(root, 0)
         # Right Right Case
         if getHeight(root.right.right) >= getHeight(root.right.left):
             root = leftRotate(root)
         # Right Left Case
         else:
             root.right = rightRotate(root.right)
+            print(
+                '=============================MiddleRotation==========================================')
+            printTree(root, 0)
             root = leftRotate(root)
+        print('=============================AfterRotation=========================================')
+
+        printTree(root, 0)
     return root
 
 

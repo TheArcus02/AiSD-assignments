@@ -2,7 +2,7 @@ import random
 import time
 import matplotlib.pyplot as plt
 from linkedList import LinkedList, Node
-from BinarySearchTree import Node as BSTNode, getHeight, insert, findNode, deleteTree, createAVLFromBST
+from BinarySearchTree import Node as BSTNode, getHeight, insert, findNode, deleteTree, createAVLFromBST, printTree, inorder, postorder, preorder
 
 
 def main():
@@ -19,10 +19,24 @@ def main():
     # compare_deleting(LENGTH, STEP)
 
     # compare heights of bst to avl
-    compare_heights(LENGTH, STEP)
+    # compare_heights(LENGTH, STEP)
 
-    # ylabel='Height'
-    generate_plot(log=False)
+    # # ylabel='Height'
+    # generate_plot(log=False)
+    data = [20, 44, 31, 1, 23, 17, 22, 16, 18, 15, 21, 37, 25, 11, 24]
+    bst = create_bst(data)
+    createAVLFromBST(bst)
+    # printTree(bst, 0)
+    # print('inorder:', end="")
+    # inorder(bst)
+    # print()
+    # print('preorder:', end="")
+    # preorder(bst)
+    # print()
+    # print('postorder:', end="")
+    # postorder(bst)
+    print("===================================FinalTree===================================")
+    printTree(bst, 0)
 
 
 def compare_heights(max_len: int, step: int):

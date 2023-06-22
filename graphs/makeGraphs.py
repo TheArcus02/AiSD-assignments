@@ -222,23 +222,7 @@ def visualizeGraph(graph):
         for v in graph.graph[u]:
             G.add_edge(u, v)
 
-    # Układ wiosenny (spring layout) dla wizualizacji grafu
-    pos = nx.spring_layout(G)
-    nx.draw(G, pos, with_labels=True, node_size=500, node_color='lightblue',
+    pos = nx.spring_layout(G)  # type: ignore
+    nx.draw(G, pos, with_labels=True, node_size=500, node_color='lightblue',  # type: ignore
             font_weight='bold', font_color='black', edge_color='gray')
     plt.show()
-
-
-matrix = [
-    [0, 0, 1, 1, 1, 1],
-    [0, 0, 1, 1, 0, 0],
-    [1, 1, 0, 0, 1, 1],
-    [1, 1, 0, 0, 1, 1],
-    [1, 0, 1, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0]
-]
-g = matrixToGraph(matrix)
-visualizeGraph(g)
-print(g)
-print(g.findEulerianPath())
-g.findHamiltonCycle()
